@@ -46,3 +46,19 @@
            (is (false? (f "asdfasd9fasdfasd")))
            (is (true? (f (:_id u))))
            ))
+
+(deftest test-custom-validator
+  (let [f (fn [d n1 n2]
+            (and
+              (validators/validate-int n1)
+              (validators/validate-int n2)
+              (validators/validate-int d)
+              (>= d n1)
+              (<= d n2))) ]
+    (is (false? (f 0 1 10)))
+    (is (true? (f 1 1 10)))
+    (is (false? (validators/validate-custom 0 f 1 10)))
+    (is (true? (validators/validate-custom 1 f 1 10)))
+    (is (nil? (first (validators/validate-field 0 :somefield :custom f 1 10))))
+    (is (true? (first (validators/validate-field 1 :somefield :custom f 1 10))))
+))

@@ -96,6 +96,9 @@
     (and (>= (nth t 2) 0) (< (nth t 2) 60))
     ))
 
+(defn validate-custom [datum f & args]
+  (apply f datum args))
+
 (defn validate-datetime
   "Make sure d is a datetime tuple in the form [yyyy mm dd HH MM SS]"
   [d]
@@ -114,11 +117,13 @@
      :float validate-float
      :float? (optional validate-float)
      :bool validate-bool
+     :bool? (optional validate-bool)
 
      ; Relations
      :foreign validate-foreign
-     :foreign? (fn [coll datum] (or (nil? datum) (validate-foreign coll datum))) ; True in any case
+     :foreign? (fn [coll datum] (or (nil? datum) (validate-foreign coll datum)))
      :many validate-many
+     :many? validate-many ; Nullability is implied
 
      ; Date and time
      :date validate-date
@@ -129,13 +134,12 @@
      :time? (optional validate-time)
 
      ; Collections
-     :list (fn [t datum] ((validators t) datum))
      :enum validate-enum
      :enum-many validate-enum-many
      :enum-many? validate-enum-many?
 
      ; Do-it-yourself
-     :custom (fn [val f] (f val))
+     :custom validate-custom
 
      ; Embedded documents
      :embed (fn [datum schema defaults]
@@ -154,7 +158,7 @@
                  ; I know this could be pared down, but for easier understanding
                  ; each of these is separate so they can be commented.
 
-                 (= type :custom) (is-valid? (val-fn datum (first args)))
+                 (= type :custom) (is-valid? (apply val-fn datum args))
 
                  (= type :embed) (is-valid? (val-fn datum (first args) (nth args 1)))
                  ; Foreign key - args is a collection

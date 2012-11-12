@@ -81,6 +81,100 @@ Returns [true nil] if successful and [nil *error message*] if not.
 
 Will fail on the first invalid field.
 
+Validators included:
+=======================
+
+Basic Types
+------------
+
+**:str, :int, :float, :bool**
+
+    [:strval :str]
+
+Assert that the type of the given data is present, and as given.
+
+**:str?, :int?, :float?, :bool?**
+
+    [:bool_or_nil_val :bool?]
+
+Same as above, but will accept nil/unset values for these fields
+
+Enumerations
+----------------
+
+**:enum, :enum?**
+
+    (def members ["a", "b", "c"])
+
+    ; Example schema
+    [:enumfield :enum members]
+
+Ensure that the given data is a member. :enum? will also accept an empty value.
+
+**:enum-many, :enum-many?**
+
+    [:enum_many_field :enum-many members]
+
+Ensure the input is a collection, with each element present in the member vector.
+**:enum-many?** will also accept an empty value.
+
+Dates
+------
+
+This is a bit weird, don't rely on it. Use a proper date type, this is just for storage purposes.
+
+Dates and times as vectors.
+
+**:date, :date?**
+
+Ensure that the given data is a list of three integers representing year, month, day.
+Year is in range 1900-2100, Month is in range 1-12 inclusive, Day is in range 1-31 inclusive.
+:date? will accept a nil as well.
+
+Does not challenge putting too many days in a month, so don't rely on it.
+
+**:time, :time?**
+
+Ensure that the given data is a list of three integers representing hour, minute, second,
+checking for the obvious ranges of 0-23, 0-59, 0-59 respectively.
+:time? will accept a nil/unset as well.
+
+Relationships
+--------------
+
+**:foreign, :foreign?**
+
+    (def coll :users)
+
+    ; Example schema entry
+    [:owner :foreign :users]
+
+:foreign will accept an ObjectId referring to an entry in another (or the same)
+collection, and **perform a query** to ensure that it exists.
+:foreign? will accept a nil as well.
+
+**:many, :many?**
+
+    [:owners :many :users]
+
+Will accept a collection of ObjectIds and verify that they exist. Both are actually the
+same, this time, and will return true for empty/nils.
+
+Custom Validators
+------------------
+
+**:custom**
+    (defn validate-int-in-range [d n1 n2]
+     (and
+       (validators/validate-int n1)
+       (validators/validate-int n2)
+       (validators/validate-int d)
+       (>= d n1)
+       (<= d n2)))
+
+    [:number_from_one_to_ten :custom validate-int-in-range 1 10]
+
+
 License
 ========
 
