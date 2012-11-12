@@ -80,3 +80,5 @@ Validate all fields of <data> against <schema>. Strips any fields not in <schema
 
 License
 ========
+
+Licensed under the [MIT License](http://opensource.org/licenses/MIT)
