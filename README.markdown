@@ -51,7 +51,7 @@ If you use only one part of this library, use this one (because it provides vali
 
 **(model name coll schema)**
 
-Creates CRUD functions for a model named <name>, stored in <coll> and validated against <schema>
+Creates CRUD functions for a model named *name*, stored in *coll* and validated against *schema*
 
     (model "user" :users user-schema)
 
@@ -63,20 +63,23 @@ packaged validation of data (as a hash-map) against a defined schema.
 
 A schema is a vector of entries in the following format: [name type & args]. Examples:
 
-   [[:intval :int]
-    [:strval :str]
-    [:enumval :enum ["a" "b" "c"]]
-    [:user :foreign :users]]
+    [[:intval :int]
+     [:strval :str]
+     [:enumval :enum ["a" "b" "c"]]
+     [:user :foreign :users]]
 
 **(validate-field value field type)**  
 **(validate-field value field type & args)**
 
-Validate <value> for <field> as a <type>, with <args> as arguments to the validator.
-Returns [true nil] if successful and [nil <error message>] if not.
+Validate *value* for *field* as a *type*, with *args* as arguments to the validator.
+Returns [true nil] if successful and [nil *error message*] if not.
 
 **(validate-data data schema)**
 
-Validate all fields of <data> against <schema>. Strips any fields not in <schema> from <data>.
+Validate all fields of *data* against *schema*. Strips any fields not in *schema* from *data*.
+Returns [true nil] if successful and [nil *error message*] if not.
+
+Will fail on the first invalid field.
 
 License
 ========
