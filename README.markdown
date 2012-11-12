@@ -1,7 +1,7 @@
 Schemongo
 =============
 
-A mongo schema library with two features of note:
+Practice safe mongo! A mongo schema library with two features of note:
 
 1. Validators for field types, including enumerable field types and BSON ObjectIds, and
 2. A model macro and functions to shortcut the validation and creation/updating/deletion of data
@@ -164,6 +164,7 @@ Custom Validators
 ------------------
 
 **:custom**
+
     (defn validate-int-in-range [d n1 n2]
      (and
        (validators/validate-int n1)
@@ -174,6 +175,8 @@ Custom Validators
 
     [:number_from_one_to_ten :custom validate-int-in-range 1 10]
 
+Give it a function, and any extra arguments to pass to the function, and it will ensure that function
+returns true before writing to the database.
 
 License
 ========
