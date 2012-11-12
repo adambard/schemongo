@@ -1,10 +1,21 @@
 Schemongo
 =============
 
+**Latest Version:** 0.1.2
+
 Practice safe mongo! A mongo schema library with two features of note:
 
 1. Validators for field types, including enumerable field types and BSON ObjectIds, and
 2. A model macro and functions to shortcut the validation and creation/updating/deletion of data
+
+Installation
+=============
+
+Include in your lein :dependencies
+
+    [schemongo "0.1.2"]
+
+This will resolve the dependencies on congomongo and clojure 1.3.0
 
 Quickstart
 ===============
@@ -177,6 +188,11 @@ Custom Validators
 
 Give it a function, and any extra arguments to pass to the function, and it will ensure that function
 returns true before writing to the database.
+
+Changelog
+=========
+
+**0.1.2** - Initial public release
 
 License
 ========

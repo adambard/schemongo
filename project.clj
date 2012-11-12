@@ -1,4 +1,4 @@
-(defproject schemongo "0.1.1"
+(defproject schemongo "0.1.2"
   :description "Schema-vased validations for mongodb"
   :url "https://github.com/adambard/schemongo"
   :license {:name "The MIT License"
